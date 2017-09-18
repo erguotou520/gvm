@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <input type="text" g-model="val">
+    <input type="text" id="foo" value="data">
+    <span g-text="foo"></span>
+  </div>
+</body>
+<script src="./utils.js"></script>
+<script src="./dep.js"></script>
+<script src="./observer.js"></script>
+<script src="./watcher.js"></script>
+<script src="./gvm.js"></script>
+<script>
+var data = {
+  foo: ''
+}
+observe(data, function (val, oldVal, path) {
+  console.log(val, oldVal, path)
+})
+document.getElementById('foo').addEventListener('input', function (e) {
+  data.foo = e.target.value
+}, false)
+var $text = document.querySelector('[g-text]')
+new Watcher(data, 'foo', function (val, old) {
+  console.log(val, old)
+  $text.textContent = val
+})
+new Gvm({
+  el: '#app',
+  data: {
+    val: 'hello gvm'
+  }
+})
+</script>
+</html>
